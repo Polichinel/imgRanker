@@ -65,34 +65,24 @@ def getTwoImages(two_paths):
         return(imgTk0, imgTk1)
 
 
-# define and viz +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-def defNviz(cwd,images_path):
+def getAttDict(cwd):
 
-    # use util functions
-    indx_list = getIndexList(cwd)
-    path_list = getImagesPath(images_path)
-    two_paths, indx_list = drawTwoPaths(path_list, indx_list)
-    image0, image1 = getTwoImages(two_paths)
+    """Get the dict of att_lists or create them"""
 
-    # update pickeled index list
-    pickle.dump(indx_list, open( "indx_list.pkl", "wb" ))
+    # List to store used pairs: should be saved and loaded after first itereation
+    if 'att_dict.pkl' in os.listdir(cwd):
+        att_dict = pickle.load( open( "att_dict.pkl", "rb" ) )
 
-    # Rinse the grid if needed
-    try:
-        img0.grid_forget()
-        img1.grid_forget()
-    except:
-        pass
+    else:
 
-    # define
-    img0 = Label(image  = image0)
-    img1 = Label(image = image1)
+        att0_list = []
+        att1_list = []
+        att2_list = []
+        att3_list = []
+        att4_list = []
+        att5_list = []
 
-    # keep reference, becuase tkinter image thing
-    img0.image = image0
-    img1.image = image1
+        att_dict = {'att0':att0_list,'att1':att1_list,'att2':att2_list,'att3':att3_list,'att4':att4_list,'att5':att5_list}
 
-    # viz
-    img0.grid(row=0, column = 0, columnspan = 1)
-    img1.grid(row=0, column = 1, columnspan = 1)
+    return(att_dict)
