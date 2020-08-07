@@ -2,42 +2,61 @@
 import os
 from functions import * # import util functions
 from tkinter import *
-# from variables import *
-# getVars()
 
 # paths
 cwd = os.getcwd()
 image_folder = '/images'
 images_path = cwd + image_folder
 
+
 # Initiate Tkinter window ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 root = Tk()
 root.title("Image")
 root.iconbitmap('@/home/polichinel/Documents/Tkinter/icons/zilla.xbm')
+
 
 # Function to define and viz +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 def defNviz(cwd, images_path, first_round_indicator = 0):
 
     """Executed when pressing 'next'. Switches the images, clears the boxes, saves both image index and atribute lists"""
 
-    global indx_list # so it goes between 'next' clicks
+    # so they go between 'next' clicks
+    global indx_list
+    global att_dict
 
-    # # update pickeled index list
+    # When next is pressed (is round is not init) pickle images and choosen atributes
     if first_round_indicator == 0: # not when the program first initiates - only when pressing 'next'
+
+        # index list
         pickle.dump(indx_list, open( "indx_list.pkl", "wb" ))
 
+        # attributes
+        att_dict['att0'].append((att0_img0.get(), att0_img1.get()))
+        att_dict['att1'].append((att1_img0.get(), att1_img1.get()))
+        att_dict['att2'].append((att2_img0.get(), att2_img1.get()))
+        att_dict['att3'].append((att3_img0.get(), att3_img1.get()))
+        att_dict['att4'].append((att4_img0.get(), att4_img1.get()))
+        att_dict['att5'].append((att5_img0.get(), att5_img1.get()))
+
+        pickle.dump(att_dict, open( "att_dict.pkl", "wb" ))
+
+    # If it is the initiail round simply load the list and dict
     else:
         indx_list = getIndexList(cwd)
+        att_dict = getAttDict(cwd)
 
-    # viz count
+    # Window -------------------------------------------------------------------
+
+    # vizualize the image count
     n_pairs_coded = Label(root, text = f'{len(indx_list)}/5000')
     n_pairs_coded.grid(row = 9, column = 1, pady = 5, padx = 20, columnspan = 2)
 
-    # use util functions
-    path_list = getImagesPath(images_path)
-    two_paths, indx_list = drawTwoPaths(path_list, indx_list)
+    # use util functions to get two new paths/images plus initiate or update lists and dict
+    two_paths, indx_list = drawTwoPaths(cwd, images_path)
+    att_dict = getAttDict(cwd) # why is this here again? if needed put in funciton above.
+
     image0, image1 = getTwoImages(two_paths)
-    att_dict = getAttDict(cwd)
+
 
     # Rinse the grid if needed
     try:
@@ -64,19 +83,6 @@ def defNviz(cwd, images_path, first_round_indicator = 0):
     img1_label = Label(root, text = f'{two_paths[1]}')
     img1_label.grid(row = 1, column = 1, pady = 5)
 
-
-    if first_round_indicator == 0: # not when the program first initiates - only when pressing 'next'
-    # # save to lists, collect in dict and pickle
-        att_dict['att0'].append((att0_img0.get(), att0_img1.get()))
-        att_dict['att1'].append((att1_img0.get(), att1_img1.get()))
-        att_dict['att2'].append((att2_img0.get(), att2_img1.get()))
-        att_dict['att3'].append((att3_img0.get(), att3_img1.get()))
-        att_dict['att4'].append((att4_img0.get(), att4_img1.get()))
-        att_dict['att5'].append((att5_img0.get(), att5_img1.get()))
-
-    #     att_dict = {'att0':att0_list,'att1':att1_list,'att2':att2_list,'att3':att3_list,'att4':att4_list,'att5':att5_list}
-        pickle.dump(att_dict, open( "att_dict.pkl", "wb" ))
-
     # Rinse checkboxes
     c00.deselect()
     c01.deselect()
@@ -91,15 +97,8 @@ def defNviz(cwd, images_path, first_round_indicator = 0):
     c50.deselect()
     c51.deselect()
 
-# Checkbuttons -----------------------------------------------------------------
-#so in your indx_list you already have the pairs (tuple, ordered).
-# so for each atribute you simple want a list of tuples [(0,1),..,(0,1)]
-# with one denoting the image have "most" of said atrribute.
-# most be saved when you press next, so it goes in the defNviz.
-# prob its own nested function. And then pickle dump the
 
-
-# vars
+# tkinter vars  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 att0_img0 = IntVar()
 att0_img1 = IntVar()
 
@@ -178,18 +177,14 @@ c51 = Checkbutton(root, text = "att 5", variable = att5_img1, onvalue = 1, offva
 c51.deselect()
 c51.grid(row = 8, column = 1, pady = 5)
 
-# mics info and end
-
-# n_pairs_coded = Label(root, text = f'{len(indx_list)}/5000')
-# n_pairs_coded.grid(row = 8, column = 1, pady = 5, columnspan = 2)
-
+# end space for nice viz
 end_space = Label(root, text = ' ')
 end_space.grid(row = 9, column = 1, pady = 5, columnspan = 2)
 
 # display first two images
 defNviz(cwd,images_path, first_round_indicator = 1)
 
-# Buttons ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Next Button ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 button_next = Button(root, text = 'Next Pair >>', command = lambda: defNviz(cwd,images_path))
 button_next.grid(row = 2, column = 0, columnspan = 2)
