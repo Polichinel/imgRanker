@@ -75,7 +75,7 @@ def getTwoImages(two_paths):
 # ------------------------------------------------------------------------------
 
 
-def getAttDict(cwd):
+def getAttDict(cwd, indx_list):
 
     """Get the dict of att_lists or create them"""
 
@@ -92,6 +92,6 @@ def getAttDict(cwd):
         att4_list = []
         att5_list = []
 
-        att_dict = {'att0':att0_list,'att1':att1_list,'att2':att2_list,'att3':att3_list,'att4':att4_list,'att5':att5_list}
+        att_dict = {'att0':att0_list,'att1':att1_list,'att2':att2_list,'att3':att3_list,'att4':att4_list,'att5':att5_list, 'indx' : indx_list}
 
     return(att_dict)

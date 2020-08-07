@@ -38,12 +38,15 @@ def defNviz(cwd, images_path, first_round_indicator = 0):
         att_dict['att4'].append((att4_img0.get(), att4_img1.get()))
         att_dict['att5'].append((att5_img0.get(), att5_img1.get()))
 
+        # include the indx_list in the dict for ease and safty
+        att_dict['indx'] = indx_list #overwrite the whole jazz each time
+
         pickle.dump(att_dict, open( "att_dict.pkl", "wb" ))
 
     # If it is the initiail round simply load the list and dict
     else:
         indx_list = getIndexList(cwd)
-        att_dict = getAttDict(cwd)
+        att_dict = getAttDict(cwd, indx_list)
 
     # Window -------------------------------------------------------------------
 
@@ -53,8 +56,8 @@ def defNviz(cwd, images_path, first_round_indicator = 0):
 
     # use util functions to get two new paths/images plus initiate or update lists and dict
     two_paths, indx_list = drawTwoPaths(cwd, images_path)
-    att_dict = getAttDict(cwd) # why is this here again? if needed put in funciton above.
 
+    # get the two new images
     image0, image1 = getTwoImages(two_paths)
 
 
@@ -65,7 +68,7 @@ def defNviz(cwd, images_path, first_round_indicator = 0):
     except:
         pass
 
-    # define
+    # define the elements
     img0 = Label(image  = image0)
     img1 = Label(image = image1)
 
@@ -73,7 +76,7 @@ def defNviz(cwd, images_path, first_round_indicator = 0):
     img0.image = image0
     img1.image = image1
 
-    # viz imgs and paths
+    # visualize the difened images and their paths
     img0.grid(row=0, column = 0, columnspan = 1)
     img1.grid(row=0, column = 1, columnspan = 1)
 
@@ -182,7 +185,7 @@ end_space = Label(root, text = ' ')
 end_space.grid(row = 9, column = 1, pady = 5, columnspan = 2)
 
 # display first two images
-defNviz(cwd,images_path, first_round_indicator = 1)
+defNviz(cwd, images_path, first_round_indicator = 1)
 
 # Next Button ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
