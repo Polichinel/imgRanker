@@ -10,7 +10,7 @@ from PIL import ImageTk, Image
 
 def getIndexList(cwd):
 
-    """Creates a list of used pairs"""
+    """Creates or load a list of used pairs"""
 
     # List to store used pairs: should be saved and loaded after first itereation
     if 'indx_list.pkl' in os.listdir(cwd):
@@ -22,13 +22,13 @@ def getIndexList(cwd):
     return(indx_list)
 
 
-def getImagesPath(flat_dir_path):
+def getImagesPath(images_path):
 
     """Creates a list of all paths given a flatten dir"""
 
     path_list = []
 
-    for root, dirs, files in os.walk(flat_dir_path):
+    for root, dirs, files in os.walk(images_path):
         for name in files:
             path = os.path.join(root, name)
             path_list.append(path)
@@ -36,11 +36,16 @@ def getImagesPath(flat_dir_path):
     return(path_list)
 
 
-def drawTwoPaths(path_list, indx_list):
+def drawTwoPaths(cwd, images_path):
 
     """Get two random paths from path_list wich are not already in index_list.
     Then add to index_list and update it"""
 
+    # util functions:
+    indx_list = getIndexList(cwd)
+    path_list = getImagesPath(images_path)
+
+    # get the two paths
     two_paths = tuple(np.random.choice(path_list, 2, replace= False))# indx of pairs
 
     while two_paths in indx_list:
@@ -48,6 +53,7 @@ def drawTwoPaths(path_list, indx_list):
 
     indx_list.append(two_paths) # update index_list
 
+    # return the two_paths and a updated indx_list
     return(two_paths, indx_list)
 
 
@@ -65,6 +71,8 @@ def getTwoImages(two_paths):
 
         return(imgTk0, imgTk1)
 
+
+# ------------------------------------------------------------------------------
 
 
 def getAttDict(cwd):
