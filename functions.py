@@ -5,9 +5,6 @@ import pickle
 from tkinter import *
 from PIL import ImageTk, Image
 
-# set seed
-np.random.seed(42)
-
 # utils ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 def getIndexList(cwd):
@@ -55,6 +52,11 @@ def drawTwoPaths(cwd, images_path):
     else: 
         img1 = np.random.choice(np.array(indx_list).reshape(-1), 1 , replace= False).item() # one image already in the image list.
         img2 = np.random.choice(path_list, 1, replace= False).item() # one potentially new image
+
+        # the images should not be the same
+        while img1 == img2:
+            img2 = np.random.choice(path_list, 1, replace= False).item() # one potentially new image
+
         two_paths = tuple([img1,img2])
 
     # if the pair have already been compared, draw a new pair

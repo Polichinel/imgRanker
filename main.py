@@ -2,6 +2,10 @@
 import os
 from functions import * # import util functions
 from tkinter import *
+import numpy as np
+
+# set seed
+np.random.seed(42)
 
 # paths
 cwd = os.getcwd()
