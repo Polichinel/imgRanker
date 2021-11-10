@@ -5,7 +5,9 @@ import pickle
 from tkinter import *
 from PIL import ImageTk, Image
 
-#  tets momment...
+# set seed
+np.random.seed(42)
+
 # utils ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 def getIndexList(cwd):
@@ -45,11 +47,22 @@ def drawTwoPaths(cwd, images_path):
     indx_list = getIndexList(cwd)
     path_list = getImagesPath(images_path)
 
-    # get the two paths
-    two_paths = tuple(np.random.choice(path_list, 2, replace= False))# indx of pairs
+    # for empty indx_list
+    if len(indx_list) == 0:
+        # get two now paths paths
+        two_paths = tuple(np.random.choice(path_list, 2, replace= False))# indx of pairs
 
+    else: 
+        img1 = np.random.choice(np.array(indx_list).reshape(-1), 1 , replace= False).item() # one image already in the image list.
+        img2 = np.random.choice(path_list, 1, replace= False).item() # one potentially new image
+        two_paths = tuple([img1,img2])
+
+    # if the pair have already been compared, draw a new pair
     while two_paths in indx_list:
-        two_paths = tuple(np.random.choice(path_list, 2, replace= False))# insure new indx of pairs
+        rand_int = np.random.randint(0,2)
+        img1 = np.random.choice(np.array(indx_list).reshape(-1), 1 , replace= False).item() # one image already in the image list.
+        img2 = np.random.choice(path_list, 1, replace= False).item() # one potentially new image
+        two_paths = tuple([img1,img2])
 
     indx_list.append(two_paths) # update index_list
 
@@ -91,7 +104,14 @@ def getAttDict(cwd, indx_list):
         att3_list = []
         att4_list = []
         att5_list = []
+        att6_list = []
+        att7_list = []
+        att8_list = []
+        att9_list = []
 
-        att_dict = {'att0':att0_list,'att1':att1_list,'att2':att2_list,'att3':att3_list,'att4':att4_list,'att5':att5_list, 'indx' : indx_list}
+        att_dict = {'att0':att0_list,'att1':att1_list,'att2':att2_list,
+                    'att3':att3_list,'att4':att4_list,'att5':att5_list,
+                    'att6':att6_list,'att7':att7_list,'att8':att8_list, 
+                    'att9':att9_list,'indx' : indx_list}
 
     return(att_dict)

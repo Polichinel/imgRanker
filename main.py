@@ -12,7 +12,7 @@ images_path = cwd + image_folder
 # Initiate Tkinter window ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 root = Tk()
 root.title("Image")
-root.iconbitmap('@/home/polichinel/Documents/Tkinter/icons/zilla.xbm')
+#root.iconbitmap('@/home/polichinel/Documents/Tkinter/icons/zilla.xbm')
 
 
 # Function to define and viz +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -37,6 +37,10 @@ def defNviz(cwd, images_path, first_round_indicator = 0):
         att_dict['att3'].append((att3_img0.get(), att3_img1.get()))
         att_dict['att4'].append((att4_img0.get(), att4_img1.get()))
         att_dict['att5'].append((att5_img0.get(), att5_img1.get()))
+        att_dict['att6'].append((att6_img0.get(), att6_img1.get()))
+        att_dict['att7'].append((att7_img0.get(), att7_img1.get()))
+        att_dict['att8'].append((att8_img0.get(), att8_img1.get()))
+        att_dict['att9'].append((att9_img0.get(), att9_img1.get()))
 
         # include the indx_list in the dict for ease and safty
         att_dict['indx'] = indx_list #overwrite the whole jazz each time
@@ -52,7 +56,7 @@ def defNviz(cwd, images_path, first_round_indicator = 0):
 
     # vizualize the image count
     n_pairs_coded = Label(root, text = f'{len(indx_list)}/5000')
-    n_pairs_coded.grid(row = 9, column = 1, pady = 5, padx = 20, columnspan = 2)
+    n_pairs_coded.grid(row = 13, column = 1, pady = 5, padx = 20, columnspan = 2)
 
     # use util functions to get two new paths/images plus initiate or update lists and dict
     two_paths, indx_list = drawTwoPaths(cwd, images_path)
@@ -99,6 +103,14 @@ def defNviz(cwd, images_path, first_round_indicator = 0):
     c41.deselect()
     c50.deselect()
     c51.deselect()
+    c60.deselect()
+    c61.deselect()
+    c70.deselect()
+    c71.deselect()
+    c80.deselect()
+    c81.deselect()
+    c90.deselect()
+    c91.deselect()
 
 
 # tkinter vars  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -120,72 +132,123 @@ att4_img1 = IntVar()
 att5_img0 = IntVar()
 att5_img1 = IntVar()
 
+att6_img0 = IntVar()
+att6_img1 = IntVar()
+
+att7_img0 = IntVar()
+att7_img1 = IntVar()
+
+att8_img0 = IntVar()
+att8_img1 = IntVar()
+
+att9_img0 = IntVar()
+att9_img1 = IntVar()
+
 
 # Checkbuttons +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # att0
-c00 = Checkbutton(root, text = "att 0", variable = att0_img0, onvalue = 1, offvalue = 0)
+c00 = Checkbutton(root, text = "negative emotions t1", variable = att0_img0, onvalue = 1, offvalue = 0)
 c00.deselect()
 c00.grid(row = 3, column = 0, pady = 5)
 
-c01 = Checkbutton(root, text = "att 0", variable = att0_img1, onvalue = 1, offvalue = 0)
+c01 = Checkbutton(root, text = "negative emotions t1", variable = att0_img1, onvalue = 1, offvalue = 0)
 c01.deselect()
 c01.grid(row = 3, column = 1, pady = 5)
 
 # att1
-c10 = Checkbutton(root, text = "att 1", variable = att1_img0, onvalue = 1, offvalue = 0)
+c10 = Checkbutton(root, text = "negative emotions t2", variable = att1_img0, onvalue = 1, offvalue = 0)
 c10.deselect()
 c10.grid(row = 4, column = 0, pady = 5)
 
-c11 = Checkbutton(root, text = "att 1", variable = att1_img1, onvalue = 1, offvalue = 0)
+c11 = Checkbutton(root, text = "negative emotions t2", variable = att1_img1, onvalue = 1, offvalue = 0)
 c11.deselect()
 c11.grid(row = 4, column = 1, pady = 5)
 
 
 # att2
-c20 = Checkbutton(root, text = "att 2", variable = att2_img0, onvalue = 1, offvalue = 0)
+c20 = Checkbutton(root, text = "mass protest", variable = att2_img0, onvalue = 1, offvalue = 0)
 c20.deselect()
 c20.grid(row = 5, column = 0, pady = 5)
 
-c21 = Checkbutton(root, text = "att 2", variable = att2_img1, onvalue = 1, offvalue = 0)
+c21 = Checkbutton(root, text = "mass protest", variable = att2_img1, onvalue = 1, offvalue = 0)
 c21.deselect()
 c21.grid(row = 5, column = 1, pady = 5)
 
 
 # att3
-c30 = Checkbutton(root, text = "att 3", variable = att3_img0, onvalue = 1, offvalue = 0)
+c30 = Checkbutton(root, text = "damaged property/infra.", variable = att3_img0, onvalue = 1, offvalue = 0)
 c30.deselect()
 c30.grid(row = 6, column = 0, pady = 5)
 
-c31 = Checkbutton(root, text = "att 3", variable = att3_img1, onvalue = 1, offvalue = 0)
+c31 = Checkbutton(root, text = "damaged property/infra.", variable = att3_img1, onvalue = 1, offvalue = 0)
 c31.deselect()
 c31.grid(row = 6, column = 1, pady = 5)
 
 
 # att4
-c40 = Checkbutton(root, text = "att 4", variable = att4_img0, onvalue = 1, offvalue = 0)
+c40 = Checkbutton(root, text = "privatly/homely", variable = att4_img0, onvalue = 1, offvalue = 0)
 c40.deselect()
 c40.grid(row = 7, column = 0, pady = 5)
 
-c41 = Checkbutton(root, text = "att 4", variable = att4_img1, onvalue = 1, offvalue = 0)
+c41 = Checkbutton(root, text = "privatly/homely", variable = att4_img1, onvalue = 1, offvalue = 0)
 c41.deselect()
 c41.grid(row = 7, column = 1, pady = 5)
 
 
 # att5
-c50 = Checkbutton(root, text = "att 5", variable = att5_img0, onvalue = 1, offvalue = 0)
+c50 = Checkbutton(root, text = "public", variable = att5_img0, onvalue = 1, offvalue = 0)
 c50.deselect()
 c50.grid(row = 8, column = 0, pady = 5)
 
-c51 = Checkbutton(root, text = "att 5", variable = att5_img1, onvalue = 1, offvalue = 0)
+c51 = Checkbutton(root, text = "public", variable = att5_img1, onvalue = 1, offvalue = 0)
 c51.deselect()
 c51.grid(row = 8, column = 1, pady = 5)
 
+# att 6
+c60 = Checkbutton(root, text = "militarized", variable = att6_img0, onvalue = 1, offvalue = 0)
+c60.deselect()
+c60.grid(row = 9, column = 0, pady = 5)
+
+c61 = Checkbutton(root, text = "militarized", variable = att6_img1, onvalue = 1, offvalue = 0)
+c61.deselect()
+c61.grid(row = 9, column = 1, pady = 5)
+
+# att 7
+c70 = Checkbutton(root, text = "rural", variable = att7_img0, onvalue = 1, offvalue = 0)
+c70.deselect()
+c70.grid(row = 10, column = 0, pady = 5)
+
+c71 = Checkbutton(root, text = "rural", variable = att7_img1, onvalue = 1, offvalue = 0)
+c71.deselect()
+c71.grid(row = 10, column = 1, pady = 5)
+
+# att 8
+c80 = Checkbutton(root, text = "urban", variable = att8_img0, onvalue = 1, offvalue = 0)
+c80.deselect()
+c80.grid(row = 11, column = 0, pady = 5)
+
+c81 = Checkbutton(root, text = "urban", variable = att8_img1, onvalue = 1, offvalue = 0)
+c81.deselect()
+c81.grid(row = 11, column = 1, pady = 5)
+
+# att 9
+c90 = Checkbutton(root, text = "staged/formal", variable = att9_img0, onvalue = 1, offvalue = 0)
+c90.deselect()
+c90.grid(row = 12, column = 0, pady = 5)
+
+c91 = Checkbutton(root, text = "staged/formal", variable = att9_img1, onvalue = 1, offvalue = 0)
+c91.deselect()
+c91.grid(row = 12, column = 1, pady = 5)
+
+
 # end space for nice viz
 end_space = Label(root, text = ' ')
-end_space.grid(row = 9, column = 1, pady = 5, columnspan = 2)
+end_space.grid(row = 13, column = 1, pady = 5, columnspan = 2)
 
 # display first two images
 defNviz(cwd, images_path, first_round_indicator = 1)
+
+
 
 # Next Button ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
