@@ -44,6 +44,9 @@ def drawTwoPaths(cwd, images_path):
     indx_list = getIndexList(cwd)
     path_list = getImagesPath(images_path)
 
+    # set seed
+    np.random.seed(len(indx_list))
+
     # for empty indx_list
     if len(indx_list) == 0:
         # get two now paths paths
