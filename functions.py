@@ -7,73 +7,30 @@ from PIL import ImageTk, Image
 
 # utils ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-def getIndexList(cwd):
+def getPregenIndexList(cwd):
 
-    """Creates or load a list of used pairs"""
+    """Load a list of pairs to use"""
 
     # List to store used pairs: should be saved and loaded after first itereation
-    if 'indx_list.pkl' in os.listdir(cwd):
-        indx_list = pickle.load( open( "indx_list.pkl", "rb" ) )
+    if 'pregenerated_indx_list.pkl' in os.listdir(cwd):
+        pregen_indx_list = pickle.load(open( "pregenerated_indx_list.pkl", "rb" ) )
+        return(pregen_indx_list)
 
     else:
-        indx_list = []
+        print('No pregenerated_indx_list.pkl in folder. Run gen_preGen_pairlist.ipynb.') 
+        return(None)
 
-    return(indx_list)
+def getImagesNames(images_path):
 
+    """Creates a list of all image names given a flatten dir. Used in gen_preGen_pairList.ipynd, not main.py."""
 
-def getImagesPath(images_path):
-
-    """Creates a list of all paths given a flatten dir"""
-
-    path_list = []
+    name_list = []
 
     for root, dirs, files in os.walk(images_path):
         for name in files:
-            path = os.path.join(root, name)
-            path_list.append(path)
+            name_list.append(name)
 
-    return(path_list)
-
-
-def drawTwoPaths(cwd, images_path):
-
-    """Get two random paths from path_list wich are not already in index_list.
-    Then add to index_list and update it"""
-
-    # util functions:
-    indx_list = getIndexList(cwd)
-    path_list = getImagesPath(images_path)
-
-    # set seed
-    np.random.seed(len(indx_list))
-
-    # for empty indx_list
-    if len(indx_list) == 0:
-        # get two now paths paths
-        two_paths = tuple(np.random.choice(path_list, 2, replace= False))# indx of pairs
-
-    else: 
-        img1 = np.random.choice(np.array(indx_list).reshape(-1), 1 , replace= False).item() # one image already in the image list.
-        img2 = np.random.choice(path_list, 1, replace= False).item() # one potentially new image
-
-        # the images should not be the same
-        while img1 == img2:
-            img2 = np.random.choice(path_list, 1, replace= False).item() # one potentially new image
-
-        two_paths = tuple([img1,img2])
-
-    # if the pair have already been compared, draw a new pair
-    while two_paths in indx_list:
-        rand_int = np.random.randint(0,2)
-        img1 = np.random.choice(np.array(indx_list).reshape(-1), 1 , replace= False).item() # one image already in the image list.
-        img2 = np.random.choice(path_list, 1, replace= False).item() # one potentially new image
-        two_paths = tuple([img1,img2])
-
-    indx_list.append(two_paths) # update index_list
-
-    # return the two_paths and a updated indx_list
-    return(two_paths, indx_list)
-
+    return(name_list)
 
 def getTwoImages(two_paths):
 
@@ -90,10 +47,7 @@ def getTwoImages(two_paths):
         return(imgTk0, imgTk1)
 
 
-# ------------------------------------------------------------------------------
-
-
-def getAttDict(cwd, indx_list):
+def getAttDict(cwd):
 
     """Get the dict of att_lists or create them"""
 
@@ -101,6 +55,7 @@ def getAttDict(cwd, indx_list):
     if 'att_dict.pkl' in os.listdir(cwd):
         att_dict = pickle.load( open( "att_dict.pkl", "rb" ) )
 
+    # If it is not there, it is the first round OVERALL, we create the dict.
     else:
 
         att0_list = []
@@ -117,6 +72,6 @@ def getAttDict(cwd, indx_list):
         att_dict = {'att0':att0_list,'att1':att1_list,'att2':att2_list,
                     'att3':att3_list,'att4':att4_list,'att5':att5_list,
                     'att6':att6_list,'att7':att7_list,'att8':att8_list, 
-                    'att9':att9_list,'indx' : indx_list}
+                    'att9':att9_list,'indx_indicator' : 0}
 
     return(att_dict)

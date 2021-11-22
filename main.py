@@ -4,35 +4,30 @@ from functions import * # import util functions
 from tkinter import *
 import numpy as np
 
-# set seed
-np.random.seed(42)
-
 # paths
 cwd = os.getcwd()
 image_folder = '/images'
 images_path = cwd + image_folder
 
-
 # Initiate Tkinter window ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 root = Tk()
 root.title("Image")
-#root.iconbitmap('@/home/polichinel/Documents/Tkinter/icons/zilla.xbm')
-
 
 # Function to define and viz +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-def defNviz(cwd, images_path, first_round_indicator = 0):
+def defNviz(cwd, images_path, first_round_indicator = 0): 
 
     """Executed when pressing 'next'. Switches the images, clears the boxes, saves both image index and atribute lists"""
 
+ # Now you need to infere where you where via the attribute dict. still important that you go through the network in order.
+    
     # so they go between 'next' clicks
-    global indx_list
     global att_dict
 
-    # When next is pressed (is round is not init) pickle images and choosen atributes
-    if first_round_indicator == 0: # not when the program first initiates - only when pressing 'next'
+    # Allways load the pregenerated indexlist
+    pregen_indx_list = getPregenIndexList(cwd)
 
-        # index list
-        pickle.dump(indx_list, open( "indx_list.pkl", "wb" ))
+    # When next is pressed (is round is not after startup) pickle images and choosen atributes
+    if first_round_indicator == 0: # not when the program first startup - only when pressing 'next'
 
         # attributes
         att_dict['att0'].append((att0_img0.get(), att0_img1.get()))
@@ -46,28 +41,31 @@ def defNviz(cwd, images_path, first_round_indicator = 0):
         att_dict['att8'].append((att8_img0.get(), att8_img1.get()))
         att_dict['att9'].append((att9_img0.get(), att9_img1.get()))
 
-        # include the indx_list in the dict for ease and safty
-        att_dict['indx'] = indx_list #overwrite the whole jazz each time
+        # Next round
+        att_dict['indx_indicator'] += 1 # we move up on round.
 
+        # Save the att_dict as a pickle
         pickle.dump(att_dict, open( "att_dict.pkl", "wb" ))
 
-    # If it is the initiail round simply load the list and dict
+    # If it is the first round after startup round simply load the list and dict
     else:
-        indx_list = getIndexList(cwd)
-        att_dict = getAttDict(cwd, indx_list)
+        att_dict = getAttDict(cwd)
 
     # Window -------------------------------------------------------------------
 
     # vizualize the image count
-    n_pairs_coded = Label(root, text = f'{len(indx_list)}/5000')
+    pair_number = att_dict['indx_indicator'] # Which pair are we at. also important below.
+    pair_total = len(pregen_indx_list)
+    n_pairs_coded = Label(root, text = f'{pair_number}/{pair_total}') # CHANGE
+    # placement of image count
     n_pairs_coded.grid(row = 13, column = 1, pady = 5, padx = 20, columnspan = 2)
-
-    # use util functions to get two new paths/images plus initiate or update lists and dict
-    two_paths, indx_list = drawTwoPaths(cwd, images_path)
+    
+    # get two paths from the pregenerated list - in order.
+    two_names = pregen_indx_list[pair_number]
+    two_paths = (os.path.join(images_path, two_names[0]), os.path.join(images_path, two_names[1]))
 
     # get the two new images
     image0, image1 = getTwoImages(two_paths)
-
 
     # Rinse the grid if needed
     try:
@@ -251,7 +249,6 @@ end_space.grid(row = 13, column = 1, pady = 5, columnspan = 2)
 
 # display first two images
 defNviz(cwd, images_path, first_round_indicator = 1)
-
 
 
 # Next Button ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
